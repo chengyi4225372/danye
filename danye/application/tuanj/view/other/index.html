@@ -1,0 +1,130 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+<!--{if auth("$classuri/add")}-->
+<button data-open='{:url("$classuri/add")}' class='layui-btn layui-btn-sm'>添加</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+
+<!-- 表单搜索 开始 -->
+<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-inline">
+            <input name="keywords" value="{$Think.get.keywords|default=''}" placeholder="请输入商品名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品分类</label>
+        <div class="layui-input-inline">
+            <select name="pid">
+                <option value="1" {eq name="Think.get.pid" value="1"}  selected=""{/eq} >男神新装</option>
+                <option value="2" >女神穿搭</option>
+                <option value="3" >精品美妆</option>
+                <option value="4" >舒适内衣</option>
+                <option value="5" >鞋包配饰</option>
+                <option value="6" >潮妈必选</option>
+                <option value="7" >舌尖美食</option>
+                <option value="8" >日用百货</option>
+                <option value="9" >数码家电</option>
+            </select>
+            </div>
+        </div>
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+</form>
+<script>
+    window.laydate.render({range: true, elem: '#range-date'});
+</script>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    {empty name='list'}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action">
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>ID</th>
+            <th class='text-left nowrap'>分类名称</th>
+            <th class='text-left nowrap'>商品标题</th>
+            <th class='text-left nowrap'>金额</th>
+            <th class='text-left nowrap'>领卷降价</th>
+            <th class='text-left nowrap'>商品图片</th>
+            <th class='text-left nowrap'>已抢购人数</th>
+            <th class='text-left nowrap'>创建时间</th>
+            <th class='text-left nowrap'></th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td'>
+            {$vo.id}
+            </td>
+
+            <td class='list-table-check-td'>
+                {switch vo.pid}
+                {case 1}男神新装{/case}
+                {case 2}女神穿搭{/case}
+                {case 3}精品美妆{/case}
+                {case 4}舒适内衣{/case}
+                {case 5}鞋包配饰{/case}
+                {case 6}潮妈必选{/case}
+                {case 7}舌尖美食{/case}
+                {case 8}日用百货{/case}
+                {case 9}数码家电{/case}
+                {default /}请选择商品类型
+                {/switch}
+            </td>
+
+            <td class='text-left nowrap'>
+                {$vo.title|default=''}
+            </td>
+
+            <td class='list-table-check-td'>
+                {$vo.money|default=''}
+            </td>
+
+            <td class='list-table-check-td'>
+                {$vo.jiang|default=''}
+            </td>
+
+            <td class='text-left nowrap'>
+                <img data-tips-image src="{$vo.imgs|default=''}" height="80"/>
+            </td>
+
+            <td class='text-left nowrap'>
+                {$vo.ren|default=''}
+            </td>
+
+            <td class='text-left nowrap'>
+
+                <span class="text-explode">|</span>
+                <a data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/empty}
+</form>
+<script>
+    (function() {
+        window.form.render();
+        window.laydate.render({range: true, elem: '#create_at'});
+    })();
+</script>
+{/block}

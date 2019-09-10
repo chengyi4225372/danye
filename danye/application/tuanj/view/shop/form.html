@@ -1,0 +1,74 @@
+{extend name='admin@public/content'}
+
+{block name="content"}
+<form class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value='{$vo.title|default=""}' required="required" title="请输入标题" placeholder="请输入标题" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">爆买件数</label>
+        <div class="layui-input-block">
+            <input type="text" name="bao" value='{$vo.bao|default=""}' required="required"  class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">url链接</label>
+        <div class="layui-input-block">
+            <input type="text" name="url" value='{$vo.url|default=""}' title="请输入url链接" placeholder="请输入url链接" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片</label>
+        <div class="layui-input-block">
+            <input type="text" name="imgs" value='{$vo.imgs|default=""}' class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">购买金额</label>
+        <div class="layui-input-block">
+            <input type="text" name="money" value='{$vo.money|default=""}' title="请输入url链接"  class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">领卷降价金额</label>
+        <div class="layui-input-block">
+            <input type="text" name="jiang" value='{$vo.jiang|default=""}'  class="layui-input">
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">详情介绍</label>
+        <div class="layui-input-block">
+            <textarea name="key" class="layui-textarea">{if isset($vo['id'])}{$vo.key}{/if}</textarea>
+        </div>
+    </div>
+
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <!--<button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>-->
+    </div>
+</form>
+<script>
+    require(['jquery', 'ckeditor'], function() {
+        window.form.render();
+        $('form [name="imgs"]').uploadOneImage();
+        window.createEditor('[name="content"]', {height: 500});
+    });
+</script>
+{/block}
+

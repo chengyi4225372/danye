@@ -1,0 +1,70 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+<!--{if auth("$classuri/add")}-->
+<button data-open='{:url("$classuri/add")}' class='layui-btn layui-btn-sm'>添加</button>
+
+<!--{/if}-->
+<!--{if auth("$classuri/del")}
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-danger'>删除轮播图</button>
+-->
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<script>
+    window.laydate.render({range: true, elem: '#range-date'});
+</script>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    {empty name='list'}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action">
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+
+            <th class='text-left nowrap'>图片</th>
+            <th class='text-left nowrap'>创建时间</th>
+
+            <th class='text-left nowrap'></th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+
+
+
+            <td class='text-left nowrap'>
+                <img data-tips-image src="{$vo.imgs|default=''}" height="60"/>
+            </td>
+
+            <td class='text-left nowrap'>
+                {$vo.create_at|date='Y-m-d H:i:s'|default=''}
+            </td>
+
+            <td class='text-left nowrap'>
+
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <a data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                {/if}
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/empty}
+</form>
+<script>
+    (function() {
+        window.form.render();
+        window.laydate.render({range: true, elem: '#create_at'});
+    })();
+</script>
+{/block}
